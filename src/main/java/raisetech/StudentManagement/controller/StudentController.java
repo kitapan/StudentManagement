@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import raisetech.StudentManagement.controller.converter.StudentConverter;
@@ -23,7 +24,6 @@ public class StudentController {
 
   private StudentService service;
   private StudentConverter converter;
-
 
   @Autowired
   public StudentController(StudentService service, StudentConverter converter) {
@@ -41,11 +41,10 @@ public class StudentController {
   }
 
   @GetMapping("/student/{id}")
-  public String getStudent(Model model) {
-    StudentDetail studentDetail = new StudentDetail();
-    studentDetail.setStudentsCourses(Arrays.asList(new StudentsCourses()));
+  public String getStudent(@PathVariable String id, Model model) {
+    StudentDetail studentDetail = service.searchStudent(id);
     model.addAttribute ("studentDetail", studentDetail);
-    return "registerStudent";
+    return "updateStudent";
   }
 
 //  @GetMapping("/studentsCoursesList")

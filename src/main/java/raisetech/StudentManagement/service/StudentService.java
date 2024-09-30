@@ -3,7 +3,6 @@ package raisetech.StudentManagement.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +25,15 @@ public class StudentService {
     return repository.search();
   }
 
+  public StudentDetail searchStudent(String id){
+    Student student = repository.searchStudent(id);
+    List<StudentsCourses> studentsCourses = repository.searchStudentsCourses(student.getId());
+    StudentDetail studentDetail = new StudentDetail();
+    studentDetail.setStudent(student);
+    studentDetail.setStudentsCourses(studentsCourses);
+    return studentDetail;
+  }
+
 //  第11回演習課題　年齢が30代の人のみを抽出し、コントローラーに渡しましょう
 //  public List<Student> serchStudentList() {
 //    return repository.search().stream()
@@ -34,7 +42,7 @@ public class StudentService {
 //  }
 
   public List<StudentsCourses> searchStudentsCoursesList() {
-    return repository.searchStudentsCourses();
+    return repository.searchStudentsCoursesList();
   }
 
 //  第11回演習課題　「Javaコース」のコース情報のみを抽出して、コントローラーに渡しましょう
@@ -55,9 +63,9 @@ public class StudentService {
   }
   @Transactional
   public void updateStudent(StudentDetail studentDetail){
-    repository.registerStudent(studentDetail.getStudent());
-    for(StudentsCourses studentsCourses : studentDetail.getStudentsCourses()){
-      repository.updateStutensCourses(studentsCourses);
+    repository.updateStudent(studentDetail.getStudent());
+    for(StudentsCourses studentsCourse : studentDetail.getStudentsCourses()){
+      repository.updateStudentsCourses(studentsCourse);
     }
   }
 }
