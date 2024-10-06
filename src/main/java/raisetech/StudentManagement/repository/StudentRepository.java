@@ -15,8 +15,14 @@ public interface StudentRepository {
   @Select("SELECT * FROM students")
   List<Student> search();
 
+  @Select("SELECT * FROM students WHERE id = #{id}")
+  Student searchStudent(String id);
+
   @Select("SELECT * FROM students_courses")
-  List<StudentsCourses> searchStudentsCourses();
+  List<StudentsCourses> searchStudentsCoursesList();
+
+  @Select("SELECT * FROM students_courses WHERE student_id = #{studentId}")
+  List<StudentsCourses> searchStudentsCourses(String studentId);
 
   @Insert(
       "INSERT INTO students(name, kana_name, nickname, email, area, age, sex, remark, is_deleted) "
@@ -29,10 +35,10 @@ public interface StudentRepository {
   @Options(useGeneratedKeys = true, keyProperty = "id")
   void registerStutensCourses(StudentsCourses studentsCourses);
 
-  @Update("UPDATE students SET(name=#{name},kana_name=#{kanaName},nickname=#{nickname},email=#{email},area=#{area},age=#{age},sex=#{sex},remark=#{remark},is_deleted=#{isDeleted}) WHERE id=#{id}")
+  @Update("UPDATE students SET name=#{name},kana_name=#{kanaName},nickname=#{nickname},email=#{email},area=#{area},age=#{age},sex=#{sex},remark=#{remark},is_deleted=#{isDeleted} WHERE id=#{id}")
   void updateStudent(Student student);
 
-  @Update("UPDATE students_courses SET(course_name=#{courseName}) WHERE=id=#{id}")
-  void updateStutensCourses(StudentsCourses studentsCourses);
+  @Update("UPDATE students_courses SET course_name=#{courseName} WHERE id=#{id}")
+  void updateStudentsCourses(StudentsCourses studentsCourses);
 
 }
